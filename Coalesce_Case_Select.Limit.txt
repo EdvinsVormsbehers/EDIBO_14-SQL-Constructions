@@ -1,0 +1,134 @@
+MySQL: COALESCE Function
+
+Description
+The MySQL COALESCE function returns the first non-null expression in the list.
+
+Syntax:
+COALESCE( expression1, expression2, ... expression_n )
+
+Parameters or Arguments
+expression1 to expression_n
+The expressions to test for non-null values.
+
+Note
+If all expressions evaluate to null, then the COALESCE function will return null.
+
+
+
+
+
+MySQL: CASE Function
+
+Description
+The MySQL CASE function has the functionality of an IF-THEN-ELSE statement by allowing you
+to evaluate conditions and return a value when the first condition is met.
+
+Syntax:
+CASE [ expression ]
+
+   WHEN condition_1 THEN result_1
+   WHEN condition_2 THEN result_2
+   ...
+   WHEN condition_n THEN result_n
+
+   ELSE result
+
+END
+
+Parameters or Arguments
+
+expression
+Optional. It is the value that you are comparing to the list of conditions. (ie: condition_1, condition_2, ... condition_n)
+
+condition_1, condition_2, ... condition_n
+Evaluated in the order listed. Once a condition is found to be true, the CASE function will return the result and not evaluate the conditions any further.
+
+result_1, result_2, ... result_n
+The value returned once a condition is found to be true.
+
+EXAMPLE- Includes expression:
+
+SELECT supplier_id,
+CASE quantity
+  WHEN > 10 THEN 'The quantity is greater than 10'
+  WHEN = 10 THEN 'The quantity is 10'
+  ELSE 'The quantity is something else'
+END
+FROM suppliers;
+
+In this CASE function example, the expression is quantity whose value would be compared to each of the 
+conditions until one is met. Then the corresponding value would be returned by the CASE function.
+
+
+EXAMPLE excludes expression:
+
+SELECT
+CASE
+  WHEN a < b THEN 1
+  WHEN supplier_type = 'clothing' THEN 2
+  ELSE 3
+END
+FROM suppliers;
+
+In this CASE function example, an expression has not been included so each condition is individually 
+evaluated and can be completely different and unique. When a condition is met, the corresponding value would be returned.
+
+
+
+MySQL: SELECT LIMIT Statement
+
+Description
+The MySQL SELECT LIMIT statement is used to retrieve records from one or more tables in MySQL 
+and limit the number of records returned based on a limit value.
+
+Syntax:
+SELECT expressions
+FROM tables
+[WHERE conditions]
+[ORDER BY expression [ ASC | DESC ]]
+LIMIT row_count;
+
+Parameters or Arguments
+
+expressions
+The columns or calculations that you wish to retrieve.
+
+tables
+The tables that you wish to retrieve records from. There must be at least one table listed in the FROM clause.
+
+WHERE conditions
+Optional. The conditions that must be met for the records to be selected.
+
+ORDER BY expression
+Optional. It is used in the SELECT LIMIT statement so that you can order the results and target 
+those records that you wish to return.
+
+LIMIT row_count
+Specifies a limited number of rows in the result set to be returned based on row_count. 
+For example, LIMIT 10 would return the first 10 rows matching the SELECT criteria. 
+This is where sort order matters so be sure to use an ORDER BY clause appropriately.
+
+Example - Using LIMIT keyword:
+SELECT contact_id, last_name, first_name
+FROM contacts
+WHERE website = 'TechOnTheNet.com'
+ORDER BY contact_id DESC
+LIMIT 5;
+
+This MySQL SELECT LIMIT example would select the first 5 records from the contacts table where 
+the website is 'TechOnTheNet.com'. Note that the results are sorted by contact_id in descending 
+order so this means that the 5 largest contact_id values will be returned by the SELECT LIMIT statement.
+
+If we wanted to select the 5 smallest contact_id values instead of the largest,
+ we could change the sort order as follows:
+
+SELECT contact_id, last_name, first_name
+FROM contacts
+WHERE website = 'TechOnTheNet.com'
+ORDER BY contact_id ASC
+LIMIT 5;
+
+Now the results would be sorted by contact_id in ascending order, so the first 5 smallest contact_id 
+records that have a website of 'TechOnTheNet.com' would be returned by this SELECT LIMIT statement. 
+No other records would be returned by this query.
+

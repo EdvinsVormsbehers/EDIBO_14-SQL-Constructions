@@ -1,0 +1,187 @@
+MySQL: BETWEEN Condition
+
+Description
+The MySQL BETWEEN Condition is used to retrieve values within a range in a SELECT, INSERT, UPDATE, or DELETE statement.
+
+Syntax:
+expression BETWEEN value1 AND value2;
+
+where:
+-expression is a column or calculation.
+-value1 and value2-These values create an inclusive range that expression is compared to.
+
+Note
+The MySQL BETWEEN Condition will return the records where expression is within the range of value1 and value2 (inclusive).
+When using the MySQL BETWEEN Condition with dates, be sure to use the CAST function to explicitly convert the values to dates.
+
+EXAMPLE:
+SELECT *
+FROM contacts
+WHERE contact_id BETWEEN 100 AND 200;
+
+IS EQUIVALENT TO:
+
+SELECT *
+FROM contacts
+WHERE contact_id >= 100
+AND contact_id <= 200;
+
+EXAMPLE WITH DATE:
+SELECT *
+FROM order_details
+WHERE order_date BETWEEN CAST('2014-02-01' AS DATE) AND CAST('2014-02-28' AS DATE);
+
+EXAMPLE WITH NOT OPERATOR:
+SELECT *
+FROM suppliers
+WHERE supplier_id NOT BETWEEN 2000 AND 2999;
+
+MySQL: Combining the AND and OR Conditions
+
+Description
+The MySQL AND condition and OR condition can be combined in a SELECT, INSERT, UPDATE, or DELETE statement.
+
+Syntax:
+WHERE condition1
+AND condition2
+...
+OR condition_n;
+
+Where:
+-condition1, condition2, ... condition_n
+The conditions that are evaluated to determine if the records will be selected.
+
+EXAMPLE:
+SELECT *
+FROM customers
+WHERE (state = 'California' AND last_name = 'Johnson')
+OR (customer_id > 4500);
+
+EXAMPLE:
+SELECT customer_id, last_name, first_name
+FROM customers
+WHERE (last_name = 'Johnson')
+OR (last_name = 'Anderson' AND state = 'California')
+OR (last_name = 'Smith' AND status = 'Active' AND state = 'Florida');
+
+EXAMPLE:
+DELETE FROM contacts
+WHERE state = 'California'
+AND (last_name = 'Smith' OR last_name = 'Anderson');
+
+MySQL: Joins
+
+MySQL JOINS are used to retrieve data from multiple tables. A MySQL JOIN is performed whenever two or 
+more tables are joined in a SQL statement.
+
+There are different types of MySQL joins:
+
+MySQL INNER JOIN (or sometimes called simple join)
+MySQL LEFT OUTER JOIN (or sometimes called LEFT JOIN)
+MySQL RIGHT OUTER JOIN (or sometimes called RIGHT JOIN)
+
+Syntax:
+SELECT columns
+FROM table1 
+INNER JOIN table2
+ON table1.column = table2.column;
+
+EXAMPLE:
+SELECT suppliers.supplier_id, suppliers.supplier_name, orders.order_date
+FROM suppliers 
+INNER JOIN orders
+ON suppliers.supplier_id = orders.supplier_id;
+
+This MySQL INNER JOIN example would return all rows from the suppliers and orders tables where there is 
+a matching supplier_id value in both the suppliers and orders tables.
+
+LEFT OUTER JOIN
+
+Another type of join is called a MySQL LEFT OUTER JOIN. This type of join returns all rows from the 
+LEFT-hand table specified in the ON condition and only those rows from the other table where the joined 
+fields are equal (join condition is met).
+In some databases, the LEFT OUTER JOIN keywords are replaced with LEFT JOIN.
+
+Syntax:
+SELECT columns
+FROM table1
+LEFT [OUTER] JOIN table2
+ON table1.column = table2.column;
+
+EXAMPLE:
+SELECT suppliers.supplier_id, suppliers.supplier_name, orders.order_date
+FROM suppliers
+LEFT JOIN orders
+ON suppliers.supplier_id = orders.supplier_id;
+
+This LEFT OUTER JOIN example would return all rows from the suppliers table and only 
+those rows from the orders table where the joined fields are equal.
+If a supplier_id value in the suppliers table does not exist in the orders table, 
+all fields in the orders table will display as <null> in the result set.
+
+
+RIGHT OUTER JOIN
+
+Another type of join is called a MySQL RIGHT OUTER JOIN. This type of join returns all rows 
+from the RIGHT-hand table specified in the ON condition and only those rows from the other table 
+where the joined fields are equal (join condition is met).
+In some databases, the RIGHT OUTER JOIN keywords are replaced with RIGHT JOIN.
+
+Syntax:
+SELECT columns
+FROM table1
+RIGHT [OUTER] JOIN table2
+ON table1.column = table2.column;
+
+EXAMPLE:
+SELECT orders.order_id, orders.order_date, suppliers.supplier_name
+FROM suppliers
+RIGHT JOIN orders
+ON suppliers.supplier_id = orders.supplier_id;
+
+This RIGHT OUTER JOIN example would return all rows from the orders table and only those rows 
+from the suppliers table where the joined fields are equal.
+If a supplier_id value in the orders table does not exist in the suppliers table, 
+all fields in the suppliers table will display as <null> in the result set.
+
+
+MySQL: UNION Operator
+
+Description
+
+The MySQL UNION operator is used to combine the result sets of 2 or more SELECT statements. 
+It removes duplicate rows between the various SELECT statements.
+Each SELECT statement within the UNION operator must have the same number of fields in the result sets with similar data types.
+
+Syntax:
+SELECT expression1, expression2, ... expression_n
+FROM tables
+[WHERE conditions]
+UNION [DISTINCT]
+SELECT expression1, expression2, ... expression_n
+FROM tables
+[WHERE conditions];
+
+Parameters or Arguments
+expression1, expression2, ... expression_n
+The columns or calculations that you wish to retrieve.
+tables
+The tables that you wish to retrieve records from. There must be at least one table listed in the FROM clause.
+WHERE conditions
+Optional. The conditions that must be met for the records to be selected.
+DISTINCT
+Optional. Removes duplicates from the result set, but the inclusion of the DISTINCT modifier has no impact on 
+the result set of the UNION operator because, by default, the UNION operator already removes duplicates.
+
+
+EXAMPLE:
+SELECT supplier_id
+FROM suppliers
+UNION
+SELECT supplier_id
+FROM order_details;
+
+In this MySQL UNION operator example, if a supplier_id appeared in both the suppliers and order_details table, 
+it would appear once in your result set. The MySQL UNION operator removes duplicates. 
+If you do not wish to remove duplicates, try using the MySQL UNION ALL operator.
+
