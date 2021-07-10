@@ -1,4 +1,4 @@
-MySQL: CLOSE Statement
+#MySQL: CLOSE Statement
 This MySQL tutorial explains how to use the CLOSE statement to close a cursor in MySQL with syntax and examples.
 
 Description
@@ -46,7 +46,7 @@ END; //
 DELIMITER ;
 
 
-MySQL: Set up a Handler for Cursor's NOT FOUND condition
+#MySQL: Set up a Handler for Cursor's NOT FOUND condition
 This MySQL tutorial explains how to set up a handler for the NOT FOUND condition for a cursor in MySQL with syntax and examples.
 
 Description
@@ -103,3 +103,64 @@ BEGIN
 END; //
 
 DELIMITER ;
+
+
+MySQL: Declare a Cursor
+This MySQL tutorial explains how to declare a cursor in MySQL with syntax and examples.
+
+Description
+A cursor is a SELECT statement that is defined within the declaration section of your stored program in MySQL.
+
+Syntax
+The syntax to declare a cursor in MySQL is:
+
+DECLARE cursor_name CURSOR FOR
+  select_statement;
+Parameters or Arguments
+cursor_name
+The name to assign to the cursor.
+select_statement
+The SELECT statement associated with the cursor.
+Example
+Let's look at how to declare a cursor in MySQL.
+
+For example:
+
+DECLARE c1 CURSOR FOR
+  SELECT site_id
+  FROM sites
+  WHERE site_name = name_in;
+The result set of this cursor is all site_id values where the site_name matches the name_in variable.
+
+Below is a function that uses this cursor.
+
+DELIMITER //
+
+CREATE FUNCTION FindSiteID ( name_in VARCHAR(50) )
+RETURNS INT
+
+BEGIN
+
+   DECLARE done INT DEFAULT FALSE;
+   DECLARE siteID INT DEFAULT 0;
+
+   DECLARE c1 CURSOR FOR
+     SELECT site_id
+     FROM sites
+     WHERE site_name = name_in;
+
+   DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+
+   OPEN c1;
+   FETCH c1 INTO siteID;
+
+   CLOSE c1;
+
+   RETURN siteID;
+
+END; //
+
+DELIMITER ;
+You could then call your new function (that contains the cursor) as follows:
+
+SELECT FindSiteID ('TechOnTheNet.com');
