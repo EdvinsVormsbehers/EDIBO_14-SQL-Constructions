@@ -44,3 +44,62 @@ BEGIN
 END; //
 
 DELIMITER ;
+
+
+MySQL: Set up a Handler for Cursor's NOT FOUND condition
+This MySQL tutorial explains how to set up a handler for the NOT FOUND condition for a cursor in MySQL with syntax and examples.
+
+Description
+If you try to fetch data from a cursor and there are no rows, MySQL will raise a NO DATA error. You can set up a handler for the NOT FOUND condition so that your stored program does not terminate with an error.
+
+Syntax
+The syntax to set up a handler for the NOT FOUND condition for a cursor in MySQL is:
+
+DECLARE CONTINUE HANDLER FOR NOT FOUND [ set_condition ];
+Parameters or Arguments
+set_condition
+The condition to set when the NOT FOUND condition is encountered by the cursor.
+Example
+Let's look at how to set up a handler for the NOT FOUND condition for a cursor in MySQL.
+
+First, we need to declare a variable that will be set when the NO DATA error occurs.
+
+DECLARE done INT DEFAULT FALSE;
+Next, we need to declare the cursor.
+
+DECLARE c1 CURSOR FOR
+  SELECT site_id
+  FROM sites
+  WHERE site_name = name_in;
+Finally, we need to declare a handler for the NOT FOUND condition for the cursor.
+
+DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+Below is a function that demonstrates how to put all of these components together to set up a handler for the NOT FOUND condition for a cursor in MySQL so that your stored program will not terminate with an error.
+
+DELIMITER //
+
+CREATE FUNCTION FindSiteID ( name_in VARCHAR(50) )
+RETURNS INT
+
+BEGIN
+
+   DECLARE done INT DEFAULT FALSE;
+   DECLARE siteID INT DEFAULT 0;
+
+   DECLARE c1 CURSOR FOR
+     SELECT site_id
+     FROM sites
+     WHERE site_name = name_in;
+
+   DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+
+   OPEN c1;
+   FETCH c1 INTO siteID;
+
+   CLOSE c1;
+
+   RETURN siteID;
+
+END; //
+
+DELIMITER ;
