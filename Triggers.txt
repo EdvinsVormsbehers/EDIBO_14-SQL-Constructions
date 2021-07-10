@@ -1,1 +1,72 @@
+#MySQL: BEFORE INSERT Trigger
+This MySQL tutorial explains how to create a BEFORE INSERT Trigger in MySQL with syntax and examples.
 
+Description
+A BEFORE INSERT Trigger means that MySQL will fire this trigger before the INSERT operation is executed.
+
+Syntax
+The syntax to create a BEFORE INSERT Trigger in MySQL is:
+
+CREATE TRIGGER trigger_name
+BEFORE INSERT
+   ON table_name FOR EACH ROW
+
+BEGIN
+
+   -- variable declarations
+
+   -- trigger code
+
+END;
+Parameters or Arguments
+trigger_name
+The name of the trigger to create.
+BEFORE INSERT
+It indicates that the trigger will fire before the INSERT operation is executed.
+table_name
+The name of the table that the trigger is created on.
+Restrictions
+You can not create a BEFORE trigger on a view.
+You can update the NEW values.
+You can not update the OLD values.
+Note
+See also how to create AFTER DELETE, AFTER INSERT, AFTER UPDATE, BEFORE DELETE, and BEFORE UPDATE triggers.
+See also how to drop a trigger.
+Example
+Let's look at an example of how to create an BEFORE INSERT trigger using the CREATE TRIGGER statement in MySQL.
+
+If you had a table created as follows:
+
+CREATE TABLE contacts
+( contact_id INT(11) NOT NULL AUTO_INCREMENT,
+  last_name VARCHAR(30) NOT NULL,
+  first_name VARCHAR(25),
+  birthday DATE,
+  created_date DATE,
+  created_by VARCHAR(30),
+  CONSTRAINT contacts_pk PRIMARY KEY (contact_id)
+);
+We could then use the CREATE TRIGGER statement to create an BEFORE INSERT trigger as follows:
+
+DELIMITER //
+
+CREATE TRIGGER contacts_before_insert
+BEFORE INSERT
+   ON contacts FOR EACH ROW
+
+BEGIN
+
+   DECLARE vUser varchar(50);
+
+   -- Find username of person performing INSERT into table
+   SELECT USER() INTO vUser;
+
+   -- Update create_date field to current system date
+   SET NEW.created_date = SYSDATE();
+
+   -- Update created_by field to the username of the person performing the INSERT
+   SET NEW.created_by = vUser;
+
+END; //
+
+DELIMITER ;
