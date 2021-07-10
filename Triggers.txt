@@ -458,3 +458,27 @@ BEGIN
 END; //
 
 DELIMITER ;
+
+
+#MySQL: DROP TRIGGER Statement
+This MySQL tutorial explains how to use the DROP TRIGGER statement to drop a trigger in MySQL with syntax and examples.
+
+Description
+Once you have created a trigger in MySQL, you might find that you need to remove it from the database. You can do this with the DROP TRIGGER statement.
+
+Syntax
+The syntax to a drop a trigger in MySQL is:
+
+DROP TRIGGER trigger_name;
+Parameters or Arguments
+trigger_name
+The name of the trigger that you wish to drop.
+Note
+See also how to create AFTER DELETE, AFTER INSERT, AFTER UPDATE, BEFORE DELETE, BEFORE INSERT, and BEFORE UPDATE triggers.
+Example
+Let's look at an example of how to drop a trigger in MySQL.
+
+For example:
+
+DROP TRIGGER orders_before_insert;
+This example uses the ALTER TRIGGER statement to drop the trigger called orders_before_insert.
