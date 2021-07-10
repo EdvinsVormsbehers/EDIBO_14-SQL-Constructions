@@ -1,1 +1,46 @@
+MySQL: CLOSE Statement
+This MySQL tutorial explains how to use the CLOSE statement to close a cursor in MySQL with syntax and examples.
 
+Description
+The final step in MySQL is to close the cursor once you have finished using it.
+
+Syntax
+The syntax to close a cursor in MySQL is:
+
+CLOSE cursor_name;
+Parameters or Arguments
+cursor_name
+The name of the cursor that you wish to close.
+Example
+For example, you could close a cursor called c1 in MySQL with the following command:
+
+CLOSE c1;
+Below is a function that demonstrates how to use the CLOSE statement:
+
+DELIMITER //
+
+CREATE FUNCTION FindSiteID ( name_in VARCHAR(50) )
+RETURNS INT
+
+BEGIN
+
+   DECLARE done INT DEFAULT FALSE;
+   DECLARE siteID INT DEFAULT 0;
+
+   DECLARE c1 CURSOR FOR
+     SELECT site_id
+     FROM sites
+     WHERE site_name = name_in;
+
+   DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+
+   OPEN c1;
+   FETCH c1 INTO siteID;
+
+   CLOSE c1;
+
+   RETURN siteID;
+
+END; //
+
+DELIMITER ;
