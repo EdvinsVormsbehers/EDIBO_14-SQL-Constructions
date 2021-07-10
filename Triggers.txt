@@ -70,3 +70,79 @@ BEGIN
 END; //
 
 DELIMITER ;
+
+
+#MySQL: AFTER INSERT Trigger
+This MySQL tutorial explains how to create an AFTER INSERT Trigger in MySQL with syntax and examples.
+
+Description
+An AFTER INSERT Trigger means that MySQL will fire this trigger after the INSERT operation is executed.
+
+Syntax
+The syntax to create an AFTER INSERT Trigger in MySQL is:
+
+CREATE TRIGGER trigger_name
+AFTER INSERT
+   ON table_name FOR EACH ROW
+
+BEGIN
+
+   -- variable declarations
+
+   -- trigger code
+
+END;
+Parameters or Arguments
+trigger_name
+The name of the trigger to create.
+AFTER INSERT
+It indicates that the trigger will fire after the INSERT operation is executed.
+table_name
+The name of the table that the trigger is created on.
+Restrictions
+You can not create an AFTER trigger on a view.
+You can not update the NEW values.
+You can not update the OLD values.
+Note
+See also how to create AFTER DELETE, AFTER UPDATE, BEFORE DELETE, BEFORE INSERT, and BEFORE UPDATE triggers.
+See also how to drop a trigger.
+Example
+Let's look at an example of how to create an AFTER INSERT trigger using the CREATE TRIGGER statement in MySQL.
+
+If you had a table created as follows:
+
+CREATE TABLE contacts
+( contact_id INT(11) NOT NULL AUTO_INCREMENT,
+  last_name VARCHAR(30) NOT NULL,
+  first_name VARCHAR(25),
+  birthday DATE,
+  CONSTRAINT contacts_pk PRIMARY KEY (contact_id)
+);
+We could then use the CREATE TRIGGER statement to create an AFTER INSERT trigger as follows:
+
+DELIMITER //
+
+CREATE TRIGGER contacts_after_insert
+AFTER INSERT
+   ON contacts FOR EACH ROW
+
+BEGIN
+
+   DECLARE vUser varchar(50);
+
+   -- Find username of person performing the INSERT into table
+   SELECT USER() INTO vUser;
+
+   -- Insert record into audit table
+   INSERT INTO contacts_audit
+   ( contact_id,
+     created_date,
+     created_by)
+   VALUES
+   ( NEW.contact_id,
+     SYSDATE(),
+     vUser );
+
+END; //
+
+DELIMITER ;
