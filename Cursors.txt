@@ -105,7 +105,7 @@ END; //
 DELIMITER ;
 
 
-MySQL: Declare a Cursor
+#MySQL: Declare a Cursor
 This MySQL tutorial explains how to declare a cursor in MySQL with syntax and examples.
 
 Description
@@ -164,3 +164,63 @@ DELIMITER ;
 You could then call your new function (that contains the cursor) as follows:
 
 SELECT FindSiteID ('TechOnTheNet.com');
+
+
+#MySQL: FETCH Statement
+This MySQL tutorial explains how to use the FETCH statement to fetch the next row for a cursor in MySQL with syntax and examples.
+
+Description
+The purpose of using a cursor, in most cases, is to retrieve the rows from your cursor so that some type of operation can be performed on the data. After declaring and opening your cursor, the next step is to use the FETCH statement to fetch rows from your cursor.
+
+Syntax
+The syntax for the FETCH statement in MySQL is:
+
+FETCH [ NEXT [ FROM ] ] cursor_name INTO variable_list;
+Parameters or Arguments
+cursor_name
+The name of the cursor that you wish to fetch rows.
+variable_list
+The list of variables, comma separated, that you wish to store the cursor result set in.
+Example
+Let's look at how to fetch the next row for a cursor using the FETCH statement in MySQL.
+
+For example, you could have a cursor defined in MySQL as follows:
+
+DECLARE c1 CURSOR FOR
+  SELECT site_id
+  FROM sites
+  WHERE site_name = name_in;
+The command that would be used to fetch the data from this cursor is:
+
+FETCH c1 INTO siteID;
+This would fetch the first site_id value into the variable called site_ID.
+
+Below is a function that demonstrates how to use the FETCH statement.
+
+DELIMITER //
+
+CREATE FUNCTION FindSiteID ( name_in VARCHAR(50) )
+RETURNS INT
+
+BEGIN
+
+   DECLARE done INT DEFAULT FALSE;
+   DECLARE siteID INT DEFAULT 0;
+
+   DECLARE c1 CURSOR FOR
+     SELECT site_id
+     FROM sites
+     WHERE site_name = name_in;
+
+   DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+
+   OPEN c1;
+   FETCH c1 INTO siteID;
+
+   CLOSE c1;
+
+   RETURN siteID;
+
+END; //
+
+DELIMITER ;
