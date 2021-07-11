@@ -5,6 +5,11 @@ WHERE GenreId BETWEEN 3 AND 10;
 
 SELECT *
 FROM invoices
+WHERE InvoiceDate BETWEEN date_add(CURRENT_TIMESTAMP, INTERVAL -8 YEAR) AND CURRENT_TIMESTAMP;
+#Shows all data from invoices table with InvoiceDate for last 8 years
+
+SELECT *
+FROM invoices
 WHERE (BillingCountry = 'Germany' AND BillingCity = 'Berlin');
 # Shows all data from invoices which has both arguments true.
 
